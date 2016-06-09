@@ -49,7 +49,7 @@ be placed::
     [
         {
             "comment": "This thing.",
-            "page": 5,
+            "page": 1,
             "x": 337,
             "y": 711,
             "width": 10,
@@ -62,7 +62,7 @@ be placed::
         },
         {
             "comment": "That thing.",
-            "page": 5,
+            "page": 2,
             "x": 337,
             "y": 611,
             "width": 10,

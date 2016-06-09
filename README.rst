@@ -28,12 +28,12 @@ Given your base PDF document and JSON data, you can invoke like this::
         --extra-data=extra_data.json --output-file=filled_form.pdf \
         --preview
 
-The optional `--extra-data` argument solves the problem of completing many
+The optional ``--extra-data`` argument solves the problem of completing many
 forms containing common information with personalized differences. The data
-common to all forms may be inserted into the `extra-data` file while the
-individualized per-form data is in the `form-data` file.
+common to all forms may be inserted into the ``extra-data`` file while the
+individualized per-form data is in the ``form-data`` file.
 
-If the optional `--preview` argument present, the text background will be
+If the optional ``--preview`` argument present, the text background will be
 colored. This is helpful for positioning.
 
 
@@ -41,7 +41,7 @@ colored. This is helpful for positioning.
 Structure of JSON Data
 ----------------------
 
-The JSON data contains one attribute named `fields` that is an array of JSON
+The JSON data contains one attribute named ``fields`` that is an array of JSON
 objects. Each JSON object in the array contains all the data needed to
 position the text, set the font family, font size, and of course, the text to
 be placed::

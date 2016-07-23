@@ -9,6 +9,14 @@ be any PDF document for which you want to place text data.
 The data is written to the PDF document supplied. Multi-page PDF documents
 are supported. The meta data requires the page number to be supplied.
 
+------------
+Dependencies
+------------
+
+On Ubuntu 16.04 install `libjpeg-dev`::
+
+    sudo apt install libjpeg-dev
+
 
 ------------
 Installation

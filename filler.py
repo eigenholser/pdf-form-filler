@@ -100,6 +100,28 @@ class FormRenderer(object):
 
     def render_field(self, field, draw_point):
         """
+        Render text or image field.
+        """
+        if (field['type'] == "image"):
+            draw_fnct=self.render_image
+        if (field['type'] == "text"):
+            draw_fnct=self.render_text
+        draw_fnct(field, draw_point)
+
+    def render_image(self, field, draw_point):
+        """
+        Render image field.
+        """
+        x, y = draw_point
+        width = field['width']
+        height = field['height']
+
+        # TODO: validate file?
+        data = field['data']
+        self.overlay.drawImage(data , x, y, width, height, preserveAspectRatio=True)
+
+    def render_text(self, field, draw_point):
+        """
         Resolve the field value and draw left, right, or center.
         """
         x, y = draw_point
@@ -107,7 +129,7 @@ class FormRenderer(object):
         if self.preview:
             self.render_preview_box(field)
 
-        field_value = field['text']
+        field_value = field['data']
 
         self.overlay.setFont(field['font_face'], int(field['font_size']))
 

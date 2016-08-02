@@ -118,7 +118,7 @@ class FormRenderer(object):
 
         # TODO: validate file?
         data = field['data']
-        self.overlay.drawImage(data , x, y, width, height, preserveAspectRatio=True)
+        self.overlay.drawImage(data, x, y, width, height, preserveAspectRatio=True)
 
     def render_text(self, field, draw_point):
         """

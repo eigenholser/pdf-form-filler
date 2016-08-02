@@ -102,6 +102,8 @@ class FormRenderer(object):
         """
         Render text or image field.
         """
+        if self.preview:
+            self.render_preview_box(field)
         if (field['type'] == "image"):
             draw_fnct=self.render_image
         if (field['type'] == "text"):

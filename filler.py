@@ -23,8 +23,8 @@ class FormRenderer(object):
     Render JSON defined fields on PDF document.
     """
 
-    def __init__(self, base_form, form_data_file, extra_data_file,
-            output_file, preview):
+    def __init__(self, base_form, form_data_file, output_file,
+            extra_data_file=None, preview=None):
         # XXX: We don't validate these files...
         self.base_form = base_form
         self.output_file = output_file
@@ -32,10 +32,13 @@ class FormRenderer(object):
 
         with open(form_data_file) as f:
             form_data = json.load(f)
-        with open(extra_data_file) as f:
-            extra_data = json.load(f)
+        if extra_data_file:
+            with open(extra_data_file) as f:
+                extra_data = json.load(f)
 
-        self.fields = [x for x in form_data + extra_data]# + [x for x in extra_data]
+        self.fields = [x for x in form_data]
+        if extra_data_file:
+            self.fields += extra_data
 
         self.fields.sort(key=lambda x: x['page'], reverse=False)
 
@@ -208,8 +211,8 @@ def main():
         if not arg:
             usage_message(parser)
 
-    renderer = FormRenderer(args.base_form, args.form_data, args.extra_data,
-            args.output_file, args.preview)
+    renderer = FormRenderer(args.base_form, args.form_data, args.output_file,
+            args.extra_data, args.preview)
     renderer.render()
 
 

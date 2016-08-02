@@ -69,7 +69,7 @@ class FormRenderer(object):
                 self.render_field(field, draw_point)
 
             # Remove fields that have already been placed on page.
-            fields = fields[i:]
+            fields = fields[i+1:]
 
             # Next page
             self.overlay.showPage()

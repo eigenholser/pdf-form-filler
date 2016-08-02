@@ -119,8 +119,9 @@ class FormRenderer(object):
         height = field['height']
 
         # TODO: validate file?
-        data = field['data']
-        self.overlay.drawImage(data, x, y, width, height, preserveAspectRatio=True)
+        img_file = field['data']
+        self.overlay.drawImage(img_file, x, y, width, height,
+                preserveAspectRatio=True)
 
     def render_text(self, field, draw_point):
         """
@@ -128,10 +129,11 @@ class FormRenderer(object):
         """
         x, y = draw_point
 
-        if self.preview:
-            self.render_preview_box(field)
-
-        field_value = field['data']
+        # Support 'data' and 'text' attributes. Preference for 'data'.
+        if 'data' in field:
+            field_value = field['data']
+        else:
+            field_value = field['text']
 
         self.overlay.setFont(field['font_face'], int(field['font_size']))
 

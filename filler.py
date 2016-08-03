@@ -59,7 +59,7 @@ class FormRenderer(object):
         for page_num in range(1, self.pages+1):
             for i, field in enumerate(fields):
                 # Do not consider fields that belong to subsequent pages.
-                if field['page'] > page_num:
+                if field['page'] > page_num or field['page'] < page_num:
                     break
 
                 # Get correct coordinates at which to draw text.
@@ -69,7 +69,7 @@ class FormRenderer(object):
                 self.render_field(field, draw_point)
 
             # Remove fields that have already been placed on page.
-            fields = fields[i+1:]
+            fields = fields[i:]
 
             # Next page
             self.overlay.showPage()

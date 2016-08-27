@@ -104,9 +104,9 @@ class FormRenderer(object):
         """
         if self.preview:
             self.render_preview_box(field)
-        if (field['type'] == "image"):
+        if (field.get('type', 'text') == "image"):
             draw_fnct=self.render_image
-        if (field['type'] == "text"):
+        if (field.get('type', 'text') == "text"):
             draw_fnct=self.render_text
         draw_fnct(field, draw_point)
 

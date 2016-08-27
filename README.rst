@@ -49,9 +49,9 @@ colored. This is helpful for positioning.
 Structure of JSON Data
 ----------------------
 
-The JSON data contains one attribute named ``fields`` that is an array of JSON
-objects. Each JSON object in the array contains all the data needed to
-position the text, set the font family, font size, and of course, the text to
+The JSON data is an array of objects, each representing a field.
+Each JSON object in the array contains all the data needed to
+position the field, set the font family, font size, and of course, the text to
 be placed::
 
     [
@@ -60,25 +60,32 @@ be placed::
             "page": 1,
             "x": 337,
             "y": 711,
+            "type": "text",
             "width": 10,
             "height": 10,
             "align_horizontal": "center",
             "align_vertical": "center",
             "font_face": "Courier",
             "font_size": 14,
-            "text": "This Thing"
+            "data": "This Thing"
         },
         {
             "comment": "That thing.",
             "page": 2,
             "x": 337,
             "y": 611,
+            "type": "image",
             "width": 10,
             "height": 10,
             "align_horizontal": "center",
             "align_vertical": "center",
             "font_face": "Courier",
             "font_size": 14,
-            "text": "That Thing"
+            "data": "/path/to/image.png"
         }
     ]
+
+There are two types of fields: `text` and `image` fields. If the `type`
+attribute is `text`, the value of the `data` attribute is handled as text
+data. If the `type` attribute is `image`, the value of the `data` attribute
+is handled as the path to an image.

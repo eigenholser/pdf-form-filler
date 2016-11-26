@@ -1,6 +1,7 @@
 import json
 from pprint import pprint
 import argparse
+from math import sin, cos
 import sys
 
 # An attempt at Python2/Python3 compat.
@@ -17,6 +18,8 @@ from reportlab.pdfgen import canvas
 LEFT = 'left'
 RIGHT = 'right'
 CENTER = 'center'
+PREVIEW_COLOR = (0x20, 0xF0, 0x90,)
+PI = 3.14159
 
 class FormRenderer(object):
     """
@@ -63,10 +66,10 @@ class FormRenderer(object):
                     break
 
                 # Get correct coordinates at which to draw text.
-                draw_point = self.calculate_draw_point(field)
+#               draw_point = self.calculate_draw_point(field)
 
                 # Render field on current canvas page.
-                self.render_field(field, draw_point)
+                self.render_field(field)
 
             # Remove fields that have already been placed on page.
             fields = fields[i:]
@@ -98,15 +101,17 @@ class FormRenderer(object):
         output_file.write(self.filledbuf.getvalue())
         output_file.close()
 
-    def render_field(self, field, draw_point):
+    def render_field(self, field):
         """
         Render text or image field.
         """
         if self.preview:
             self.render_preview_box(field)
         if (field.get('type', 'text') == "image"):
+            draw_point = self.calculate_image_draw_point(field)
             draw_fnct=self.render_image
         if (field.get('type', 'text') == "text"):
+            draw_point = self.calculate_text_draw_point(field)
             draw_fnct=self.render_text
         draw_fnct(field, draw_point)
 
@@ -114,19 +119,27 @@ class FormRenderer(object):
         """
         Render image field.
         """
+        c = self.overlay    # Canvas
+
         x, y = draw_point
         width = field['width']
         height = field['height']
 
         # TODO: validate file?
         img_file = field['data']
-        self.overlay.drawImage(img_file, x, y, width, height,
-                preserveAspectRatio=True)
+        c.saveState()
+        c.translate(x, y)
+        if 'rotation' in field:
+            c.rotate(int(field['rotation']))
+        c.drawImage(img_file, 0, 0, width, height, preserveAspectRatio=True)
+        c.restoreState()
 
     def render_text(self, field, draw_point):
         """
         Resolve the field value and draw left, right, or center.
         """
+        c = self.overlay    # Canvas
+
         x, y = draw_point
 
         # Support 'data' and 'text' attributes. Preference for 'data'.
@@ -134,16 +147,6 @@ class FormRenderer(object):
             field_value = field['data']
         else:
             field_value = field['text']
-
-        self.overlay.setFont(field['font_face'], int(field['font_size']))
-
-        # Always vertically center text within field.
-        field_height = float(field['height'])
-        font_face = pdfmetrics.getFont(field['font_face']).face
-        font_size = float(field['font_size'])
-        ascent = (font_face.ascent * font_size) / 1000.0
-        voffset = (field_height - ascent) / 2
-        y += voffset
 
         # Shrink text by 1 character until it fits.
         # XXX: Danger, this will result if a single char won't fit.
@@ -155,43 +158,103 @@ class FormRenderer(object):
                 raise Exception("Single character won't fit. You should "
                         "fix that. Stubbornly refusing to continue")
 
+        c.saveState()
+        c.translate(x, y)
+
+        if 'rotation' in field:
+            c.rotate(int(field['rotation']))
+        if 'font_color' in field:
+            color = field['font_color']
+            if len(color) != 6:
+                raise Exception("Requires hex RGB colors in format 112233.")
+            r = int("0x{}".format("".join(list(color)[:2])), 16) / 255.0
+            g = int("0x{}".format("".join(list(color)[2:4])), 16) / 255.0
+            b = int("0x{}".format("".join(list(color)[4:6])), 16) / 255.0
+            c.setFillColorRGB(r, g, b)
+
         if field['align_horizontal'] == LEFT:
-            self.overlay.drawString(x, y, "{}".format(field_value))
+            c.drawString(0, 0, "{}".format(field_value))
 
         if field['align_horizontal'] == RIGHT:
-            self.overlay.drawRightString(x, y, "{}".format(field_value))
+            c.drawRightString(0, 0, "{}".format(field_value))
 
         if field['align_horizontal'] == CENTER:
-            self.overlay.drawCentredString(x, y, "{}".format(field_value))
+            c.drawCentredString(0, 0, "{}".format(field_value))
+
+        c.restoreState()
 
     def render_preview_box(self, field):
-        x, y = float(field['x']), float(field['y'])
-        field_width, field_height = float(field['width']), float(field['height'])
-        canvas = self.overlay
+        """
+        Render the preview box.
+        """
+        c = self.overlay    # Canvas
 
-        red, green, blue = (0x20, 0xF0, 0x90,)
+        x, y = float(field['x']), float(field['y'])
+        field_width, field_height = float(
+                field['width']), float(field['height'])
+
+        red, green, blue = PREVIEW_COLOR
         red = float(red) / 255
         green = float(green) / 255
         blue = float(blue) / 255
 
-        canvas.setFillColorRGB(red, green, blue)
-        canvas.setStrokeColorRGB(0, 0, 0)
-        canvas.setLineWidth(0.5)
-        canvas.rect(x, y, field_width, field_height, fill=1)
-        canvas.setFillColorRGB(0, 0, 0)
+        c.saveState()
+        c.translate(x, y)
+        c.setFillColorRGB(red, green, blue)
+        c.setStrokeColorRGB(0, 0, 0)
+        c.setLineWidth(0.5)
+        if 'rotation' in field:
+            c.rotate(int(field['rotation']))
+        c.rect(0, 0, field_width, field_height, fill=1)
+        c.restoreState()
 
-    def calculate_draw_point(self, field):
+    def calculate_image_draw_point(self, field):
         """
-        Calculate correct coordinates to draw text.
+        Calculate correct coordinates to draw image.
         """
+        c = self.overlay    # Canvas
+
         x = float(field['x'])
         y = float(field['y'])
 
+        return (x, y)
+
+    def calculate_text_draw_point(self, field):
+        """
+        Calculate correct coordinates to draw text.
+        """
+        c = self.overlay    # Canvas
+
+        x = float(field['x'])
+        y = float(field['y'])
+
+        field_height = float(field['height'])
+        # Always vertically center text within field.
+        c.setFont(field['font_face'], int(field['font_size']))
+        font_face = pdfmetrics.getFont(field['font_face']).face
+        font_size = float(field['font_size'])
+        ascent = (font_face.ascent * font_size) / 1000.0
+        voffset = (field_height - ascent) / 2
+
+        # Radians
+        rot = 0
+        if 'rotation' in field:
+            rot += float(field['rotation']) * PI / 180
+
+        xoffset = voffset * sin(rot)
+        yoffset = voffset * cos(rot)
+
+        if field['align_horizontal'] == LEFT:
+            x += xoffset * xoffset
+            y += yoffset * yoffset
+
         if field['align_horizontal'] == RIGHT:
-            x += float(field['width'])
+            x += float(field['width']) * cos(rot) - xoffset
+            y += float(field['width']) * sin(rot) + yoffset
 
         if field['align_horizontal'] == CENTER:
-            x += float(field['width']) / 2
+            x += (float(field['width']) / 2) * cos(rot) - xoffset
+            y += (float(field['width']) / 2) * sin(rot) + yoffset
 
         return (x, y)
 

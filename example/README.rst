@@ -7,7 +7,7 @@ fill in data on a PDF document.
 
 Given your base PDF document and JSON data, you can invoke like this::
 
-    python filler.py --base-form=source.pdf --form-data=example.json \
+    python ../filler.py --base-form=source.pdf --form-data=example.json \
         --output-file=filled_form.pdf --preview
 
 The optional ``--extra-data`` argument solves the problem of completing many

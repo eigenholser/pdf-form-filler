@@ -65,9 +65,6 @@ class FormRenderer(object):
                 if field['page'] > page_num or field['page'] < page_num:
                     break
 
-                # Get correct coordinates at which to draw text.
-#               draw_point = self.calculate_draw_point(field)
-
                 # Render field on current canvas page.
                 self.render_field(field)
 

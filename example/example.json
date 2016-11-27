@@ -1,0 +1,34 @@
+[
+    {
+        "comment": "This thing.",
+        "page": 1,
+        "x": 137,
+        "y": 111,
+        "type": "text",
+        "width": 100,
+        "height": 50,
+        "align_horizontal": "center",
+        "align_vertical": "center",
+        "font_face": "Courier",
+        "font_size": 14,
+        "font_color": "0000FF",
+        "rotation": 0,
+        "data": "This Thing"
+    },
+    {
+        "comment": "That thing.",
+        "page": 1,
+        "x": 337,
+        "y": 511,
+        "type": "image",
+        "width": 100,
+        "height": 100,
+        "align_horizontal": "right",
+        "align_vertical": "center",
+        "font_face": "Courier",
+        "font_size": 14,
+        "font_color": "000000",
+        "rotation": 90,
+        "data": "image.jpg"
+    }
+]

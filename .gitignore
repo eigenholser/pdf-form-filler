@@ -61,6 +61,3 @@ target/
 #Ipython Notebook
 .ipynb_checkpoints
 
-# Ignore possible data files
-*.pdf
-*.json

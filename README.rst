@@ -49,10 +49,10 @@ colored. This is helpful for positioning.
 Structure of JSON Data
 ----------------------
 
-The JSON data is an array of objects, each representing a field.
-Each JSON object in the array contains all the data needed to
-position the field, set the font family, font size, and of course, the text to
-be placed::
+The JSON data is an array of objects, each representing a field. Each JSON
+object in the array contains all the data needed to position the field. Not
+all attributes are meaningful within the `type` context. For instance, font
+attributes are ignored for image field types.
 
     [
         {
@@ -67,6 +67,8 @@ be placed::
             "align_vertical": "center",
             "font_face": "Courier",
             "font_size": 14,
+            "font_color": "0000FF",
+            "rotation": 90,
             "data": "This Thing"
         },
         {
@@ -81,6 +83,8 @@ be placed::
             "align_vertical": "center",
             "font_face": "Courier",
             "font_size": 14,
+            "font_color": "000000",
+            "rotation": 90,
             "data": "/path/to/image.png"
         }
     ]

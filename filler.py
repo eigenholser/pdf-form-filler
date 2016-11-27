@@ -242,8 +242,8 @@ class FormRenderer(object):
         yoffset = voffset * cos(rot)
 
         if field['align_horizontal'] == LEFT:
-            x += xoffset * xoffset
-            y += yoffset * yoffset
+            x -= xoffset
+            y += yoffset
 
         if field['align_horizontal'] == RIGHT:
             x += float(field['width']) * cos(rot) - xoffset

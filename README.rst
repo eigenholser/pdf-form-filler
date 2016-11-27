@@ -93,3 +93,18 @@ There are two types of fields: `text` and `image` fields. If the `type`
 attribute is `text`, the value of the `data` attribute is handled as text
 data. If the `type` attribute is `image`, the value of the `data` attribute
 is handled as the path to an image.
+
+
+-------------
+Running Tests
+-------------
+
+Install test dependencies::
+
+    $ pip install -r requirements/test.txt
+
+Run PyTest::
+
+    $ pytest
+
+Coverage report will be written to ``htmlcov/index.html``.

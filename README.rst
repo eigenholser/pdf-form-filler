@@ -28,7 +28,7 @@ work with Python 2::
     cd pdf-form-filler
     mkvirtualenv --python=/usr/bin/python3 pdf-form-filler
     setvirtualenvproject
-    pip install -r requirements.txt
+    pip install -r requirements/install.txt
 
 Given your base PDF document and JSON data, you can invoke like this::
 

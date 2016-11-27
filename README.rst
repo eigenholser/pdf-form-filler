@@ -52,7 +52,7 @@ Structure of JSON Data
 The JSON data is an array of objects, each representing a field. Each JSON
 object in the array contains all the data needed to position the field. Not
 all attributes are meaningful within the `type` context. For instance, font
-attributes are ignored for image field types.
+attributes are ignored for image field types::
 
     [
         {

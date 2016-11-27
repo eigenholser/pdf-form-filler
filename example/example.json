@@ -5,12 +5,12 @@
         "x": 137,
         "y": 111,
         "type": "text",
-        "width": 100,
+        "width": 400,
         "height": 50,
         "align_horizontal": "center",
         "align_vertical": "center",
         "font_face": "Courier",
-        "font_size": 14,
+        "font_size": 24,
         "font_color": "0000FF",
         "rotation": 0,
         "data": "This Thing"
@@ -28,7 +28,7 @@
         "font_face": "Courier",
         "font_size": 14,
         "font_color": "000000",
-        "rotation": 90,
+        "rotation": 45,
         "data": "image.jpg"
     }
 ]

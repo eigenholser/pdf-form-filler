@@ -1,11 +1,12 @@
 """
 Test for Foo
 """
-from mock import mock_open, patch
+from mock import mock_open, patch, MagicMock
 import pytest
 import json
 import os
 import sys
+from io import BytesIO
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 from filler import FormRenderer
 
@@ -91,4 +92,26 @@ class TestFormRendererInitialization(object):
             fields = [x for x in data] + [x for x in data]
             fields.sort(key=lambda x: x['page'], reverse=False)
             assert fr.fields == fields
+
+    @patch('filler.PdfFileReader')
+    @patch('filler.PdfFileWriter')
+    @patch('filler.FormRenderer.render_field')
+    def test_render(self, mock_render_field, mock_pdf_wrt, mock_pdf_rdr, form_data):
+        """
+        Test extra data. Combine form data and extra data. Confirm identical.
+        """
+        class Rdr(object):
+            getNumPages = MagicMock(return_value=2)
+            getPage = MagicMock()
+
+        mo = mock_open(read_data=form_data)
+        with patch('builtins.open', mo, create=True):
+            fr = FormRenderer("base_form.pdf", "form_data.json",
+                    "output_form.pdf")
+
+        mock_pdf_rdr.return_value = Rdr()
+        with patch('builtins.open', mock_open(read_data=b'0'), create=True):
+            fr.render()
+
+        assert mock_render_field.call_count == 2
 

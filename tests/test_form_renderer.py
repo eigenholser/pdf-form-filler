@@ -98,7 +98,8 @@ class TestFormRendererInitialization(object):
     @patch('filler.FormRenderer.render_field')
     def test_render(self, mock_render_field, mock_pdf_wrt, mock_pdf_rdr, form_data):
         """
-        Test extra data. Combine form data and extra data. Confirm identical.
+        Test render method. Rough. Looks like it will inspire method refactor.
+        Merely assert that render_field() called twice.
         """
         class Rdr(object):
             getNumPages = MagicMock(return_value=2)

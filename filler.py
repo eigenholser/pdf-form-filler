@@ -53,7 +53,7 @@ class FormRenderer(object):
             self.docbuf = CharIO(f.read())
         self.overlaybuf = CharIO()
         self.filledbuf = CharIO()
-        self.form = PdfFileReader(self.docbuf) #.getPage(0)
+        self.form = PdfFileReader(self.docbuf, strict=False) #.getPage(0)
         self.pages = self.form.getNumPages()
         self.pagesize = self.form.getPage(0).mediaBox.upperRight
         self.overlay = canvas.Canvas(self.overlaybuf, pagesize=self.pagesize)
@@ -76,7 +76,7 @@ class FormRenderer(object):
 
         self.overlay.save()
         self.overlaybuf.seek(0)
-        self.final = PdfFileReader(self.overlaybuf)
+        self.final = PdfFileReader(self.overlaybuf, strict=False)
         self.output = PdfFileWriter()
 
         # Merge text overlay pages onto original document pages.

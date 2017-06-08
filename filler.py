@@ -106,11 +106,39 @@ class FormRenderer(object):
             self.render_preview_box(field)
         if (field.get('type', 'text') == "image"):
             draw_point = self.calculate_image_draw_point(field)
-            draw_fnct=self.render_image
+            draw_fnct = self.render_image
         if (field.get('type', 'text') == "text"):
             draw_point = self.calculate_text_draw_point(field)
-            draw_fnct=self.render_text
+            draw_fnct = self.render_text
+        if (field.get('type', 'text') == "outline"):
+            draw_point = self.calculate_image_draw_point(field)
+            draw_fnct = self.render_outline
         draw_fnct(field, draw_point)
+
+    def render_outline(self, field, draw_point):
+        """
+        Render outline rectangle with hard-wired radius.
+        """
+        c = self.overlay    # Canvas
+
+        x, y = draw_point
+        _, _, width, height = self.get_position_and_size(field)
+        radius = 5          # Hard-wired radius.
+
+        c.saveState()
+        c.translate(x, y)
+
+        if 'rotation' in field:
+            c.rotate(int(field['rotation']))
+
+        if 'line_width' in field:
+            c.setLineWidth(int(field['line_width']))
+
+        (r, g, b) = self.calculate_rgb_values(field)
+        c.setStrokeColorRGB(r, g, b)
+
+        c.roundRect(0, 0, width, height, radius, stroke=True, fill=False)
+        c.restoreState()
 
     def render_image(self, field, draw_point):
         """
@@ -119,8 +147,7 @@ class FormRenderer(object):
         c = self.overlay    # Canvas
 
         x, y = draw_point
-        width = field['width']
-        height = field['height']
+        _, _, width, height = self.get_position_and_size(field)
 
         # TODO: validate file?
         img_file = field['data']
@@ -160,14 +187,9 @@ class FormRenderer(object):
 
         if 'rotation' in field:
             c.rotate(int(field['rotation']))
-        if 'font_color' in field:
-            color = field['font_color']
-            if len(color) != 6:
-                raise Exception("Requires hex RGB colors in format 112233.")
-            r = int("0x{}".format("".join(list(color)[:2])), 16) / 255.0
-            g = int("0x{}".format("".join(list(color)[2:4])), 16) / 255.0
-            b = int("0x{}".format("".join(list(color)[4:6])), 16) / 255.0
-            c.setFillColorRGB(r, g, b)
+
+        (r, g, b) = self.calculate_rgb_values(field)
+        c.setFillColorRGB(r, g, b)
 
         if field['align_horizontal'] == LEFT:
             c.drawString(0, 0, "{}".format(field_value))
@@ -186,9 +208,8 @@ class FormRenderer(object):
         """
         c = self.overlay    # Canvas
 
-        x, y = float(field['x']), float(field['y'])
-        field_width, field_height = float(
-                field['width']), float(field['height'])
+        # (x, y), field width, field height
+        x, y, w, h = self.get_position_and_size(field)
 
         red, green, blue = PREVIEW_COLOR
         red = float(red) / 255
@@ -202,15 +223,22 @@ class FormRenderer(object):
         c.setLineWidth(0.5)
         if 'rotation' in field:
             c.rotate(int(field['rotation']))
-        c.rect(0, 0, field_width, field_height, fill=1)
+        c.rect(0, 0, w, h, fill=1)
         c.restoreState()
+
+    def get_position_and_size(self, field):
+        """
+        Extract position, field width, and field height. Return as tuple.
+        """
+        # These are all required. If not present, don't handle error.
+        x, y = float(field['x']), float(field['y'])
+        w, h = float(field['width']), float(field['height'])
+        return (x, y, w, h,)
 
     def calculate_image_draw_point(self, field):
         """
         Calculate correct coordinates to draw image.
         """
-        c = self.overlay    # Canvas
-
         x = float(field['x'])
         y = float(field['y'])
 
@@ -254,6 +282,21 @@ class FormRenderer(object):
             y += (float(field['width']) / 2) * sin(rot) + yoffset
 
         return (x, y)
+
+    def calculate_rgb_values(self, field):
+        """
+        Calculate R, G, B values from hexadecimal color value if present.
+        Default to black.
+        """
+        (r, g, b,) = (0, 0, 0,)
+        if 'font_color' in field:
+            color = field['font_color']
+            if len(color) != 6:
+                raise Exception("Requires hex RGB colors in format 112233.")
+            r = int("0x{}".format("".join(list(color)[:2])), 16) / 255.0
+            g = int("0x{}".format("".join(list(color)[2:4])), 16) / 255.0
+            b = int("0x{}".format("".join(list(color)[4:6])), 16) / 255.0
+        return (r, g, b,)
 
 
 class FormArgumentParser(argparse.ArgumentParser):

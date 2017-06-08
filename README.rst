@@ -56,7 +56,7 @@ attributes are ignored for image field types::
 
     [
         {
-            "comment": "This thing.",
+            "comment": "Text type",
             "page": 1,
             "x": 337,
             "y": 711,
@@ -72,7 +72,7 @@ attributes are ignored for image field types::
             "data": "This Thing"
         },
         {
-            "comment": "That thing.",
+            "comment": "Image type",
             "page": 2,
             "x": 337,
             "y": 611,
@@ -87,12 +87,33 @@ attributes are ignored for image field types::
             "rotation": 90,
             "data": "/path/to/image.png"
         }
+        {
+            "comment": "Outline type",
+            "page": 3,
+            "x": 50,
+            "y": 30,
+            "type": "outline",
+            "width": 235,
+            "height": 408,
+            "line_width": 3,
+            "align_horizontal": "center",
+            "align_vertical": "center",
+            "font_face": "Courier",
+            "font_size": 14,
+            "font_color": "000000",
+            "rotation": 0,
+            "data": ""
+        }
     ]
 
-There are two types of fields: `text` and `image` fields. If the `type`
-attribute is `text`, the value of the `data` attribute is handled as text
-data. If the `type` attribute is `image`, the value of the `data` attribute
-is handled as the path to an image.
+There are three types of fields: `text`, `image`,  and `outline` fields. If
+the `type` attribute is `text`, the value of the `data` attribute is handled
+as text data. If the `type` attribute is `image`, the value of the `data`
+attribute is handled as the path to an image. If the `type` attribute is
+`outline`, the `data` attribute is ignored.
+
+`TODO:` Various JSON attributes are ignored for different values of `type`.
+Required attributes for each type should be listed.
 
 
 -------------

@@ -123,7 +123,7 @@ attributes are ignored for image field types::
         }
     ]
 
-There are four types of fields: `text`, `image`, `outline`, and `line` fields.
+There are four types of fields: ``text``, `image`, `outline`, and `line` fields.
 If the `type` attribute is `text`, the value of the `data` attribute is handled
 as text data. If the `type` attribute is `image`, the value of the `data`
 attribute is handled as the path to an image. If the `type` attribute is

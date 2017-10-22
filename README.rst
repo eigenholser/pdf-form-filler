@@ -13,7 +13,7 @@ are supported. The meta data requires the page number to be supplied.
 Dependencies
 ------------
 
-On Ubuntu 16.04 install `libjpeg-dev`::
+On Ubuntu 16.04 install ``libjpeg-dev``::
 
     sudo apt install libjpeg-dev
 
@@ -51,7 +51,7 @@ Structure of JSON Data
 
 The JSON data is an array of objects, each representing a field. Each JSON
 object in the array contains all the data needed to position the field. Not
-all attributes are meaningful within the `type` context. For instance, font
+all attributes are meaningful within the ``type`` context. For instance, font
 attributes are ignored for image field types::
 
     [
@@ -123,17 +123,18 @@ attributes are ignored for image field types::
         }
     ]
 
-There are four types of fields: ``text``, `image`, `outline`, and `line` fields.
-If the `type` attribute is `text`, the value of the `data` attribute is handled
-as text data. If the `type` attribute is `image`, the value of the `data`
-attribute is handled as the path to an image. If the `type` attribute is
-`outline` or `line`, the `data` attribute is ignored.
+There are four types of fields: ``text``, ``image``, ``outline``, and ``line``
+fields.  If the ``type`` attribute is ``text``, the value of the ``data``
+attribute is handled as text data. If the ``type`` attribute is ``image``, the
+value of the ``data`` attribute is handled as the path to an image. If the
+``type`` attribute is ``outline`` or ``line``, the ``data`` attribute is
+ignored.
 
-There are some special considerations for `line` type fields. Set `width` or
-`height` to zero as needed or the drawn line will be diagonal. Because of
+There are some special considerations for ``line`` type fields. Set ``width``
+or ``height`` to zero as needed or the drawn line will be diagonal. Because of
 this, the preview box will not be visible.
 
-`TODO:` Various JSON attributes are ignored for different values of `type`.
+``TODO:`` Various JSON attributes are ignored for different values of ``type``.
 Required attributes for each type should be listed.
 
 

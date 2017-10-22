@@ -103,14 +103,35 @@ attributes are ignored for image field types::
             "font_color": "000000",
             "rotation": 0,
             "data": ""
+        },
+        {
+            "comment": "Line type",
+            "page": 4,
+            "x": 50,
+            "y": 30,
+            "type": "line",
+            "width": 235,
+            "height": 0,
+            "line_width": 3,
+            "align_horizontal": "center",
+            "align_vertical": "center",
+            "font_face": "",
+            "font_size": 0,
+            "font_color": "000000",
+            "rotation": 0,
+            "data": ""
         }
     ]
 
-There are three types of fields: `text`, `image`,  and `outline` fields. If
-the `type` attribute is `text`, the value of the `data` attribute is handled
+There are four types of fields: `text`, `image`, `outline`, and `line` fields.
+If the `type` attribute is `text`, the value of the `data` attribute is handled
 as text data. If the `type` attribute is `image`, the value of the `data`
 attribute is handled as the path to an image. If the `type` attribute is
-`outline`, the `data` attribute is ignored.
+`outline` or `line`, the `data` attribute is ignored.
+
+There are some special considerations for `line` type fields. Set `width` or
+`height` to zero as needed or the drawn line will be diagonal. Because of
+this, the preview box will not be visible.
 
 `TODO:` Various JSON attributes are ignored for different values of `type`.
 Required attributes for each type should be listed.

@@ -113,7 +113,36 @@ class FormRenderer(object):
         if (field.get('type', 'text') == "outline"):
             draw_point = self.calculate_image_draw_point(field)
             draw_fnct = self.render_outline
+        if (field.get('type', 'text') == "line"):
+            draw_point = self.calculate_image_draw_point(field)
+            draw_fnct = self.render_line
         draw_fnct(field, draw_point)
+
+    def render_line(self, field, draw_point):
+        """
+        Render outline rectangle with hard-wired radius.
+        """
+        c = self.overlay    # Canvas
+
+        x, y = draw_point
+        _, _, width, height = self.get_position_and_size(field)
+        x2 = x + width
+        y2 = y + height
+
+        c.saveState()
+        c.translate(x, y)
+
+        if 'rotation' in field:
+            c.rotate(int(field['rotation']))
+
+        if 'line_width' in field:
+            c.setLineWidth(int(field['line_width']))
+
+        (r, g, b) = self.calculate_rgb_values(field)
+        c.setStrokeColorRGB(r, g, b)
+
+        c.line(0, 0, width, height)
+        c.restoreState()
 
     def render_outline(self, field, draw_point):
         """
@@ -209,7 +238,7 @@ class FormRenderer(object):
         c = self.overlay    # Canvas
 
         # (x, y), field width, field height
-        x, y, w, h = self.get_position_and_size(field)
+        x, y, width, height = self.get_position_and_size(field)
 
         red, green, blue = PREVIEW_COLOR
         red = float(red) / 255
@@ -223,7 +252,7 @@ class FormRenderer(object):
         c.setLineWidth(0.5)
         if 'rotation' in field:
             c.rotate(int(field['rotation']))
-        c.rect(0, 0, w, h, fill=1)
+        c.rect(0, 0, width, height, fill=1)
         c.restoreState()
 
     def get_position_and_size(self, field):

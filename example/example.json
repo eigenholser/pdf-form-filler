@@ -1,11 +1,11 @@
 [
     {
-        "comment": "This thing.",
+        "comment": "Text type.",
         "page": 1,
-        "x": 137,
-        "y": 111,
+        "x": 300,
+        "y": 165,
         "type": "text",
-        "width": 400,
+        "width": 235,
         "height": 50,
         "align_horizontal": "center",
         "align_vertical": "center",
@@ -16,7 +16,7 @@
         "data": "This Thing"
     },
     {
-        "comment": "That thing.",
+        "comment": "Image type.",
         "page": 1,
         "x": 337,
         "y": 511,
@@ -30,5 +30,39 @@
         "font_color": "000000",
         "rotation": 45,
         "data": "image.jpg"
+    },
+    {
+        "comment": "Outline type",
+        "page": 1,
+        "x": 50,
+        "y": 30,
+        "type": "outline",
+        "width": 235,
+        "height": 408,
+        "line_width": 3,
+        "align_horizontal": "center",
+        "align_vertical": "center",
+        "font_face": "Courier",
+        "font_size": 14,
+        "font_color": "000000",
+        "rotation": 0,
+        "data": ""
+    },
+    {
+        "comment": "Line type",
+        "page": 1,
+        "x": 300,
+        "y": 160,
+        "type": "line",
+        "width": 235,
+        "height": 0,
+        "line_width": 3,
+        "align_horizontal": "left",
+        "align_vertical": "center",
+        "font_face": "",
+        "font_size": 0,
+        "font_color": "009090",
+        "rotation": 0,
+        "data": ""
     }
 ]

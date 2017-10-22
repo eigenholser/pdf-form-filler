@@ -155,5 +155,5 @@ Coverage report will be written to ``htmlcov/index.html``.
 References
 ----------
 
-1. `ReportLab User Guide <http://meteorite.unm.edu/site_media/pdf/reportlab-userguide.pdf>`_
+1. `ReportLab User Guide (PDF) <http://meteorite.unm.edu/site_media/pdf/reportlab-userguide.pdf>`_
 

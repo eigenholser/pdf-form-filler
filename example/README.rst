@@ -40,3 +40,10 @@ Convert to PDF using ``ps2pdf``::
 
 You will now have a file called ``source.pdf`` to play with. It will consist
 of a single blank page.
+
+----------
+References
+----------
+
+1. `ReportLab User Guide <http://meteorite.unm.edu/site_media/pdf/reportlab-userguide.pdf>`_
+
